@@ -1,0 +1,2 @@
+class InvalidFileContents < StandardError
+end

@@ -1,3 +1,5 @@
+require 'invalid_file_contents'
+
 class Parser
   NUM_ARGS_I = 2
   NUM_ARGS_L = 3
@@ -96,5 +98,3 @@ class Parser
   end
 end
 
-class InvalidFileContents < StandardError
-end
