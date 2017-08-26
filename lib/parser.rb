@@ -35,15 +35,22 @@ class Parser
     line_without_first_char = line[1..-1]
     case first_char
       when /I/
-        validate_num_of_args(line_without_first_char, NUM_ARGS_I)
+        args = validate_num_of_args(line_without_first_char, NUM_ARGS_I)
+        convert_list_of_strings_to_int(args)
       when /H/
-        validate_num_of_args(line_without_first_char, NUM_ARGS_H)
+        args =validate_num_of_args(line_without_first_char, NUM_ARGS_H)
+        dimensions = convert_list_of_strings_to_int(args[0..2])
+        colour = validate_colour(args[3])
       when /C/
         validate_num_of_args(line_without_first_char, NUM_ARGS_C)
       when /L/
-        validate_num_of_args(line_without_first_char, NUM_ARGS_L)
+        args = validate_num_of_args(line_without_first_char, NUM_ARGS_L)
+        dimensions = convert_list_of_strings_to_int(args[0..1])
+        colour = validate_colour(args[2])
       when /V/
-        validate_num_of_args(line_without_first_char, NUM_ARGS_V)
+        args = validate_num_of_args(line_without_first_char, NUM_ARGS_V)
+        dimensions = convert_list_of_strings_to_int(args[0..2])
+        colour = validate_colour(args[3])
       when /S/
         validate_num_of_args(line_without_first_char, NUM_ARGS_S)
     end
@@ -58,6 +65,16 @@ class Parser
     args = line.split(" ")
     raise InvalidFileContents unless args.size == expected_arg_num
     args
+  end
+
+  def convert_list_of_strings_to_int(args)
+    args.map do |arg|
+      arg.match(/\d+/) ? arg.to_i : (raise InvalidFileContents)
+    end
+  end
+
+  def validate_colour(colour)
+    raise InvalidFileContents unless colour.match(/A-Z/)
   end
 end
 
