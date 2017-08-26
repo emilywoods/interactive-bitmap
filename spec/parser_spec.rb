@@ -1,5 +1,6 @@
 require 'rspec'
 require 'parser'
+require 'invalid_file_contents'
 
 describe 'parser' do
 
