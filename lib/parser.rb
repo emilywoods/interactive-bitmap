@@ -6,6 +6,12 @@ class Parser
   NUM_ARGS_H = 4
   NUM_ARGS_C = 0
   NUM_ARGS_S = 0
+  SYM_X0 = :x0
+  SYM_Y0 = :y0
+  SYM_X1 = :x1
+  SYM_Y1 = :y1
+  SYM_COMMAND = :command
+  SYM_COLOUR = :colour
 
   attr_reader :source
 
@@ -35,29 +41,33 @@ class Parser
     line_without_first_char = line[1..-1]
     case first_char
       when /I/
-        args = validate_num_of_args(line_without_first_char, NUM_ARGS_I)
-        convert_list_of_strings_to_int(args)
+        dimensions = validate_num_of_args(line_without_first_char, NUM_ARGS_I)
+        dims_as_i = convert_list_of_strings_to_int(dimensions)
+        Hash[SYM_COMMAND, first_char, SYM_X0, dims_as_i[0], SYM_Y0, dims_as_i[1]]
       when /H/
         args =validate_num_of_args(line_without_first_char, NUM_ARGS_H)
-        dimensions = convert_list_of_strings_to_int(args[0..2])
+        dims_as_i = convert_list_of_strings_to_int(args[0..2])
         colour = validate_colour(args[3])
-      when /C/
+        Hash[SYM_COMMAND, first_char, SYM_X0, dims_as_i[0], SYM_X1, dims_as_i[1], SYM_Y0, dims_as_i[2], SYM_COLOUR, colour]
+      when /C|S/
         validate_num_of_args(line_without_first_char, NUM_ARGS_C)
+        Hash[SYM_COMMAND, first_char]
       when /L/
         args = validate_num_of_args(line_without_first_char, NUM_ARGS_L)
-        dimensions = convert_list_of_strings_to_int(args[0..1])
+        dims_as_i = convert_list_of_strings_to_int(args[0..1])
         colour = validate_colour(args[2])
+        Hash[SYM_COMMAND, first_char, SYM_X0, dims_as_i[0], SYM_Y0, dims_as_i[1], SYM_COLOUR, colour]
       when /V/
         args = validate_num_of_args(line_without_first_char, NUM_ARGS_V)
-        dimensions = convert_list_of_strings_to_int(args[0..2])
+        dims_as_i = convert_list_of_strings_to_int(args[0..2])
         colour = validate_colour(args[3])
-      when /S/
-        validate_num_of_args(line_without_first_char, NUM_ARGS_S)
+        Hash[SYM_COMMAND, first_char, SYM_X0, dims_as_i[0], SYM_Y0, dims_as_i[1], SYM_Y1, dims_as_i[2], SYM_COLOUR, colour]
     end
   end
 
+  # Remove??
   def validate_command(char)
-    pattern = /(?:H\s)|(?:I\s)|(?:C\s)|(?:L\s)|(?:V\s)|(?:S\s)/
+    pattern = /(?:H\s)|(?:I\s)|(?:C)|(?:L\s)|(?:V\s)|(?:S)/
     raise InvalidFileContents unless char.match(pattern)
   end
 
@@ -74,7 +84,8 @@ class Parser
   end
 
   def validate_colour(colour)
-    raise InvalidFileContents unless colour.match(/A-Z/)
+    raise InvalidFileContents unless colour.match(/[A-Z]/)
+    colour
   end
 end
 

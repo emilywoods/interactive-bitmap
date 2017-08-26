@@ -59,6 +59,35 @@ describe 'parser' do
     expect{Parser.new('V 1 M 1 C').parse}.to raise_error(InvalidFileContents)
   end
 
+  it 'returns a list of a hash with keys: command, x, y when command is I' do
+    source = 'I 1 1'
+    expect(Parser.new(source).parse).to eq([{"command": "I", "x0": 1, "y0": 1}])
+  end
+
+  it 'returns a list of a hash with key: command when command is C' do
+    source = 'C'
+    expect(Parser.new(source).parse).to eq([{"command": "C"}])
+  end
+
+  it 'returns a list of a hash with key: command when command is S' do
+    source = 'S'
+    expect(Parser.new(source).parse).to eq([{"command": "S"}])
+  end
+
+  it 'returns a list of a hash with keys: command, x, y, C when command is L' do
+    source = 'L 1 1 W'
+    expect(Parser.new(source).parse).to eq([{"command": "L", "x0": 1, "y0": 1, colour: "W"}])
+  end
+
+  it 'returns a list of a hash with keys: command, x, y1, y2, C when command is V' do
+    source = 'V 1 1 1 W'
+    expect(Parser.new(source).parse).to eq([{"command": "V", "x0": 1, "y0": 1, "y1": 1, colour: "W"}])
+  end
+
+  it 'returns a list of a hash with keys: command, x, y1, y2, C when command is H' do
+    source = 'H 1 1 1 W'
+    expect(Parser.new(source).parse).to eq([{"command": "H", "x0": 1, "x1": 1, "y0": 1, colour: "W"}])
+  end
 
   # Two line gap
 end
