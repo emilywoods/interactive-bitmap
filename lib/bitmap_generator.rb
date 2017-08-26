@@ -31,6 +31,10 @@ class BitmapGenerator
         clear_image
       when "V"
         draw_vertical_line(command, image_array)
+      when "H"
+        draw_horizontal_line(command, image_array)
+      when "S"
+        [command[:command], show_image(image_array)]
     end
   end
 
@@ -46,18 +50,21 @@ class BitmapGenerator
   end
 
   def create_image
-    Array.new(image_X) { Array.new(image_Y, COLOUR_WHITE) }
+    Array.new(image_X) {Array.new(image_Y, COLOUR_WHITE)}
   end
 
   def change_pixel_colour(command, image_array)
     x = command[:x0]
     y = command[:y0]
-    image_array[y - 1][ x - 1 ] = command[:colour]
+
+    raise InvalidFileContents if (x > image_X || y > image_Y)
+
+    image_array[y - 1][x - 1] = command[:colour]
     image_array
   end
 
   def clear_image
-    [[],[]]
+    [[], []]
   end
 
   def draw_vertical_line(command, image_array)
@@ -65,12 +72,39 @@ class BitmapGenerator
     y = command[:y0]
     y1 = command[:y1]
 
-    (y..y1).map do |y_new|
-      image_array[y_new - 1][ x - 1 ] = command[:colour]
+    validate_y(y, y1)
+
+    (y..y1).map do |y_temp|
+      image_array[y_temp - 1][x - 1] = command[:colour]
     end
     image_array
   end
 
-  
+  def draw_horizontal_line(command, image_array)
+    x = command[:x0]
+    x1 = command[:x1]
+    y = command[:y0]
+
+    validate_x(x, x1)
+
+    (x..x1).map do |x_temp|
+      image_array[y - 1][x_temp - 1] = command[:colour]
+    end
+    image_array
+  end
+
+  def show_image(image_array)
+    image_array.map do |rows|
+      rows.join("")
+    end.join("\n")
+  end
+
+  def validate_x(x = 1, x1 = 1)
+    raise InvalidFileContents unless x && x1 <= image_X && x < x1
+  end
+
+  def validate_y(y = 1, y1 = 1)
+    raise InvalidFileContents unless y && y1 <= image_Y && y < y1
+  end
 
 end

@@ -65,15 +65,67 @@ describe 'bitmap_generator' do
     expect(image).to eq([["O", "C", "O"], ["O", "O", "O"], ["O", "O", "O"]])
   end
 
+  it 'should raise an error if L(x0) is greater than I(x0)' do
+    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "L", "x0": 7, "y0": 1, "colour": "C"} ]
+    expect{BitmapGenerator.new(source).generate}.to raise_error(InvalidFileContents)
+  end
+
+  it 'should raise an error if L(y0) is greater than I(y0)' do
+    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "L", "x0": 2, "y0": 6, "colour": "C"} ]
+    expect{BitmapGenerator.new(source).generate}.to raise_error(InvalidFileContents)
+  end
+
   it 'should clear an image' do
     source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "C"} ]
     image = BitmapGenerator.new(source).generate
     expect(image).to eq([[],[]])
   end
 
-  it 'should draw a vertical segment V 2 3 6 W' do
+  it 'should draw a vertical segment - V 3 1 2 G' do
     source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "V", "x0": 3, "y0": 1, "y1": 2, "colour": "G" } ]
     image = BitmapGenerator.new(source).generate
     expect(image).to eq([["O", "O", "G"], ["O", "O", "G"], ["O", "O", "O"]])
+  end
+
+  it 'should raise an error if the V(y1) value is less than V(y0)' do
+    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "V", "x0": 3, "y0": 5, "y1": 1, "colour": "G" } ]
+    expect{BitmapGenerator.new(source).generate}.to raise_error(InvalidFileContents)
+  end
+
+  it 'should raise an error if the V(y0) value is greater than I(y0)' do
+    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "V", "x0": 3, "y0": 1, "y1": 5, "colour": "G" } ]
+    expect{BitmapGenerator.new(source).generate}.to raise_error(InvalidFileContents)
+  end
+
+  it 'should raise an error if the V(x0) value is greater than I(x0)' do
+    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "V", "x0": 5, "y0": 1, "y1": 5, "colour": "G"  } ]
+    expect{BitmapGenerator.new(source).generate}.to raise_error(InvalidFileContents)
+  end
+
+  it 'should draw a horizontal segment H 1 3 2 G' do
+    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "H", "x0": 1, "x1": 3, "y0": 2, "colour": "G" } ]
+    image = BitmapGenerator.new(source).generate
+    expect(image).to eq([["O", "O", "O"], ["G", "G", "G"], ["O", "O", "O"]])
+  end
+
+  it 'should raise an error if the H(x1) value is less than H(x0)' do
+    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "H", "x0": 2, "x1": 1, "y0": 2, "colour": "G" } ]
+    expect{BitmapGenerator.new(source).generate}.to raise_error(InvalidFileContents)
+  end
+
+  it 'should raise an error if the H(x1) value is greater than I(x0)' do
+    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "H", "x0": 5, "x1": 4, "y0": 2, "colour": "G" } ]
+    expect{BitmapGenerator.new(source).generate}.to raise_error(InvalidFileContents)
+  end
+
+  it 'should raise an error if the H(y0) value is greater than I(y0)' do
+    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "H", "x0": 1, "x1": 1, "y0": 5, "colour": "G" } ]
+    expect{BitmapGenerator.new(source).generate}.to raise_error(InvalidFileContents)
+  end
+
+  it 'should show the image' do
+    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "S"} ]
+    image = BitmapGenerator.new(source).generate
+    expect(image).to eq(["S", "OOO\nOOO\nOOO"])
   end
 end
