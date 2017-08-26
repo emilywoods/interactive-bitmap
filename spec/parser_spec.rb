@@ -89,7 +89,22 @@ describe 'parser' do
     expect(Parser.new(source).parse).to eq([{"command": "H", "x0": 1, "x1": 1, "y0": 1, colour: "W"}])
   end
 
-  # Two line gap
+  it 'returns a list of hashes when mulitline input' do
+    source = "H 1 1 1 W\nS\nI 1 1"
+    expect(Parser.new(source).parse).to eq([
+                                               {"command": "H", "x0": 1, "x1": 1, "y0": 1, colour: "W"},
+                                               {"command": "S"},
+                                               {"command": "I", "x0": 1, "y0": 1}])
+  end
+
+  it 'returns a list of hashes when mulitline input with spaced lines' do
+    source = "H 1 1 1 W\n\nS\n\nI 1 1"
+    expect(Parser.new(source).parse).to eq([
+                                               {"command": "H", "x0": 1, "x1": 1, "y0": 1, colour: "W"},
+                                               {"command": "S"},
+                                               {"command": "I", "x0": 1, "y0": 1}])
+  end
+
 end
 
 

@@ -61,6 +61,8 @@ class Parser
         dims_as_i = convert_list_of_strings_to_int(args[0..2])
         colour = validate_colour(args[3])
         Hash[SYM_COMMAND, first_char, SYM_X0, dims_as_i[0], SYM_Y0, dims_as_i[1], SYM_Y1, dims_as_i[2], SYM_COLOUR, colour]
+      else
+        exit
     end
   end
 
