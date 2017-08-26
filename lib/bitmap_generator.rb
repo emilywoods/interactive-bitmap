@@ -16,7 +16,7 @@ class BitmapGenerator
     source.each do |instruction|
       image_array = generate_image(instruction, image_array)
     end
-    image_array.first
+    image_array
   end
 
   private
@@ -24,9 +24,11 @@ class BitmapGenerator
   def generate_image(instruction, image_array)
     case instruction[:command]
       when "I"
-        create_image(image_array)
+        create_image
       when "L"
         change_pixel_colour(instruction, image_array)
+      when "C"
+        clear_image
     end
   end
 
@@ -42,14 +44,18 @@ class BitmapGenerator
         source.first[:y0] < 250
   end
 
-  def create_image(image_array)
-    image_array.push(Array.new(image_X) { Array.new(image_Y, COLOUR_WHITE) })
+  def create_image
+    Array.new(image_X) { Array.new(image_Y, COLOUR_WHITE) }
   end
 
   def change_pixel_colour(instruction, image_array)
     x = instruction[:x0]
     y = instruction[:y0]
-    image_array.first[y - 1][ x - 1 ] = instruction[:colour]
+    image_array[y - 1][ x - 1 ] = instruction[:colour]
     image_array
+  end
+
+  def clear_image
+    [[],[]]
   end
 end

@@ -65,4 +65,9 @@ describe 'bitmap_generator' do
     expect(image).to eq([["O", "C", "O"], ["O", "O", "O"], ["O", "O", "O"]])
   end
 
+  it 'should clear an image' do
+    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "C"} ]
+    image = BitmapGenerator.new(source).generate
+    expect(image).to eq([[],[]])
+  end
 end
