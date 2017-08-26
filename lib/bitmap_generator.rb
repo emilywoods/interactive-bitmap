@@ -1,6 +1,7 @@
 require 'invalid_file_contents'
 
 class BitmapGenerator
+  COLOUR_WHITE = 'O'
   attr_reader :source, :image_X, :image_Y
 
   def initialize(source)
@@ -18,14 +19,17 @@ class BitmapGenerator
     image_array.first
   end
 
+  private
+
   def generate_image(instruction, image_array)
     case instruction[:command]
       when "I"
         create_image(image_array)
+      when "L"
+        change_pixel_colour(instruction, image_array)
     end
   end
 
-  private
 
   def validate_first_command_creates_image
     raise InvalidFileContents if source.first[:command] != "I" || !image_size_within_limits?
@@ -39,6 +43,13 @@ class BitmapGenerator
   end
 
   def create_image(image_array)
-    image_array.push(Array.new(image_X) { Array.new(image_Y, 'C') })
+    image_array.push(Array.new(image_X) { Array.new(image_Y, COLOUR_WHITE) })
+  end
+
+  def change_pixel_colour(instruction, image_array)
+    x = instruction[:x0]
+    y = instruction[:y0]
+    image_array.first[y - 1][ x - 1 ] = instruction[:colour]
+    image_array
   end
 end

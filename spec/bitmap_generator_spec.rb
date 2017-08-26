@@ -32,25 +32,37 @@ describe 'bitmap_generator' do
   it 'should generate a pixel image when the input values are valid' do
     source = [{"command": "I", "x0": 1, "y0": 1}]
     image = BitmapGenerator.new(source).generate
-    expect(image).to eq([["C"]])
+    expect(image).to eq([["O"]])
   end
 
   it 'should generate a 1d image of rows when the input values are valid' do
     source = [{"command": "I", "x0": 1, "y0": 3}]
     image = BitmapGenerator.new(source).generate
-    expect(image).to eq([["C", "C", "C"]])
+    expect(image).to eq([["O", "O", "O"]])
   end
 
   it 'should generate a matrix of cols when the input values are valid' do
     source = [{"command": "I", "x0": 3, "y0": 1}]
     image = BitmapGenerator.new(source).generate
-    expect(image).to eq([["C"], ["C"], ["C"]])
+    expect(image).to eq([["O"], ["O"], ["O"]])
   end
 
   it 'should generate a matrix of row and cols when the input values are valid' do
     source = [{"command": "I", "x0": 3, "y0": 3}]
     image = BitmapGenerator.new(source).generate
-    expect(image).to eq([["C", "C", "C"], ["C", "C", "C"], ["C", "C", "C"]])
+    expect(image).to eq([["O", "O", "O"], ["O", "O", "O"], ["O", "O", "O"]])
+  end
+
+  it 'should change the colour of a pixel in a 2x2 image' do
+    source = [{"command": "I", "x0": 2, "y0": 2}, {"command": "L", "x0": 1, "y0": 2, "colour": "C"} ]
+    image = BitmapGenerator.new(source).generate
+    expect(image).to eq([["O", "O"], ["C", "O"]])
+  end
+
+  it 'should change the colour of a pixel in a 3x3 imag' do
+    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "L", "x0": 2, "y0": 1, "colour": "C"} ]
+    image = BitmapGenerator.new(source).generate
+    expect(image).to eq([["O", "C", "O"], ["O", "O", "O"], ["O", "O", "O"]])
   end
 
 end
