@@ -21,17 +21,18 @@ class BitmapGenerator
 
   private
 
-  def generate_image(instruction, image_array)
-    case instruction[:command]
+  def generate_image(command, image_array)
+    case command[:command]
       when "I"
         create_image
       when "L"
-        change_pixel_colour(instruction, image_array)
+        change_pixel_colour(command, image_array)
       when "C"
         clear_image
+      when "V"
+        draw_vertical_line(command, image_array)
     end
   end
-
 
   def validate_first_command_creates_image
     raise InvalidFileContents if source.first[:command] != "I" || !image_size_within_limits?
@@ -48,14 +49,28 @@ class BitmapGenerator
     Array.new(image_X) { Array.new(image_Y, COLOUR_WHITE) }
   end
 
-  def change_pixel_colour(instruction, image_array)
-    x = instruction[:x0]
-    y = instruction[:y0]
-    image_array[y - 1][ x - 1 ] = instruction[:colour]
+  def change_pixel_colour(command, image_array)
+    x = command[:x0]
+    y = command[:y0]
+    image_array[y - 1][ x - 1 ] = command[:colour]
     image_array
   end
 
   def clear_image
     [[],[]]
   end
+
+  def draw_vertical_line(command, image_array)
+    x = command[:x0]
+    y = command[:y0]
+    y1 = command[:y1]
+
+    (y..y1).map do |y_new|
+      image_array[y_new - 1][ x - 1 ] = command[:colour]
+    end
+    image_array
+  end
+
+  
+
 end

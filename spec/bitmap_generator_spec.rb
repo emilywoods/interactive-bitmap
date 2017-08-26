@@ -70,4 +70,10 @@ describe 'bitmap_generator' do
     image = BitmapGenerator.new(source).generate
     expect(image).to eq([[],[]])
   end
+
+  it 'should draw a vertical segment V 2 3 6 W' do
+    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "V", "x0": 3, "y0": 1, "y1": 2, "colour": "G" } ]
+    image = BitmapGenerator.new(source).generate
+    expect(image).to eq([["O", "O", "G"], ["O", "O", "G"], ["O", "O", "O"]])
+  end
 end
