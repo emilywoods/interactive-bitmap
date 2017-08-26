@@ -61,3 +61,10 @@ And the commands are valid\
 And there is an 'S' command\
 When the user runs the program\
 Then the image is output of commands prior to S
+
+**Scenario: Valid file, valid commands, line breaks between each command**\
+Given the user inputs a valid file\
+And the commands are valid\
+And there are spaces between each line\
+When the user runs the program\
+Then it should correctly parse the file
