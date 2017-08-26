@@ -38,13 +38,13 @@ describe 'bitmap_generator' do
   it 'should generate a 1d image of rows when the input values are valid' do
     source = [{"command": "I", "x0": 1, "y0": 3}]
     image = BitmapGenerator.new(source).generate
-    expect(image).to eq([["O", "O", "O"]])
+    expect(image).to eq([["O"], ["O"], ["O"]])
   end
 
   it 'should generate a matrix of cols when the input values are valid' do
     source = [{"command": "I", "x0": 3, "y0": 1}]
     image = BitmapGenerator.new(source).generate
-    expect(image).to eq([["O"], ["O"], ["O"]])
+    expect(image).to eq([["O", "O", "O"]])
   end
 
   it 'should generate a matrix of row and cols when the input values are valid' do
