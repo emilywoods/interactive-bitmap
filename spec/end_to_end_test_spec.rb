@@ -1,17 +1,18 @@
 require 'rspec'
 require 'tempfile'
+require './lib/bitmap_editor'
 
 describe 'End to end behaviour' do
   let(:test_file) { Tempfile.new("new-file") }
 
   it 'raises an InvalidFile error when no file is input' do
     stdout = `bin/bitmap_editor `.chomp
-    expect(stdout).to eq("Error: please input a valid file\
-                         \n e.g. bin/bitmap_editor file.txt")  end
+    expect(stdout).to eq(BitmapEditor::INVALID_INPUT_MESSAGE)
+  end
 
   it 'raises an InvalidFile error when an invalid file is input' do
     stdout = `bin/bitmap_editor file!%@`.chomp
-    expect(stdout).to eq("Oh dear, this file does not exist")
+    expect(stdout).to eq(BitmapEditor::INVALID_INPUT_MESSAGE)
   end
 
   it 'raises an InvalidInput error when the file has an invalid command' do
