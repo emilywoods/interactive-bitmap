@@ -1,9 +1,5 @@
 class BitmapGenerator
-  def initialize(source)
+  def initialize(source); end
 
-  end
-
-  def generate
-
-  end
+  def generate; end
 end

@@ -1,0 +1,43 @@
+Metrics/LineLength:
+  Max: 80
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+Style/RegexpLiteral:
+  EnforcedStyle: slashes
+
+  SupportedStyles:
+    - slashes
+    - percent_r
+    - mixed
+
+  AllowInnerSlashes: true
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Lint/ImplicitStringConcatenation:
+  Enabled: false
+
+Security/Eval:
+  Description: 'The use of eval represents a serious security risk.'
+  Enabled: false
+
+AllCops:
+  Exclude:
+    - './examples'
+    - './spec/spec_helper.rb'
+

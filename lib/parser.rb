@@ -1,5 +1,4 @@
 class Parser
-
   NUM_ARGS_I = 2
   NUM_ARGS_L = 3
   NUM_ARGS_V = 4
@@ -39,47 +38,60 @@ class Parser
     first_char = line.slice(0)
     line_without_first_char = line[1..-1]
     case first_char
-      when /I/
-        dimensions = validate_num_of_args(line_without_first_char, NUM_ARGS_I)
-        dims_as_i = convert_list_of_strings_to_int(dimensions)
-        Hash[SYM_COMMAND, first_char, SYM_X0, dims_as_i[0], SYM_Y0, dims_as_i[1]]
-      when /H/
-        args =validate_num_of_args(line_without_first_char, NUM_ARGS_H)
-        dims_as_i = convert_list_of_strings_to_int(args[0..2])
-        colour = validate_colour(args[3])
-        Hash[SYM_COMMAND, first_char, SYM_X0, dims_as_i[0], SYM_X1, dims_as_i[1], SYM_Y0, dims_as_i[2], SYM_COLOUR, colour]
-      when /C|S/
-        validate_num_of_args(line_without_first_char, NUM_ARGS_C)
-        Hash[SYM_COMMAND, first_char]
-      when /L/
-        args = validate_num_of_args(line_without_first_char, NUM_ARGS_L)
-        dims_as_i = convert_list_of_strings_to_int(args[0..1])
-        colour = validate_colour(args[2])
-        Hash[SYM_COMMAND, first_char, SYM_X0, dims_as_i[0], SYM_Y0, dims_as_i[1], SYM_COLOUR, colour]
-      when /V/
-        args = validate_num_of_args(line_without_first_char, NUM_ARGS_V)
-        dims_as_i = convert_list_of_strings_to_int(args[0..2])
-        colour = validate_colour(args[3])
-        Hash[SYM_COMMAND, first_char, SYM_X0, dims_as_i[0], SYM_Y0, dims_as_i[1], SYM_Y1, dims_as_i[2], SYM_COLOUR, colour]
-      else
-        exit
+    when /I/
+      dimensions = validate_num_of_args(line_without_first_char, NUM_ARGS_I)
+      dims_as_i = convert_list_of_strings_to_int(dimensions)
+      Hash[SYM_COMMAND, first_char,
+           SYM_X0, dims_as_i[0],
+           SYM_Y0, dims_as_i[1]]
+    when /H/
+      args = validate_num_of_args(line_without_first_char, NUM_ARGS_H)
+      dims_as_i = convert_list_of_strings_to_int(args[0..2])
+      colour = validate_colour(args[3])
+      Hash[SYM_COMMAND, first_char,
+           SYM_X0, dims_as_i[0],
+           SYM_X1, dims_as_i[1],
+           SYM_Y0, dims_as_i[2],
+           SYM_COLOUR, colour]
+    when /C|S/
+      validate_num_of_args(line_without_first_char, NUM_ARGS_C)
+      Hash[SYM_COMMAND, first_char]
+    when /L/
+      args = validate_num_of_args(line_without_first_char, NUM_ARGS_L)
+      dims_as_i = convert_list_of_strings_to_int(args[0..1])
+      colour = validate_colour(args[2])
+      Hash[SYM_COMMAND, first_char,
+           SYM_X0, dims_as_i[0],
+           SYM_Y0, dims_as_i[1],
+           SYM_COLOUR, colour]
+    when /V/
+      args = validate_num_of_args(line_without_first_char, NUM_ARGS_V)
+      dims_as_i = convert_list_of_strings_to_int(args[0..2])
+      colour = validate_colour(args[3])
+      Hash[SYM_COMMAND, first_char,
+           SYM_X0, dims_as_i[0],
+           SYM_Y0, dims_as_i[1],
+           SYM_Y1, dims_as_i[2],
+           SYM_COLOUR, colour]
+    else
+      exit
     end
   end
 
   def validate_num_of_args(line, expected_arg_num)
-    args = line.split(" ")
+    args = line.split(' ')
     raise InvalidFileContents unless args.size == expected_arg_num
     args
   end
 
   def convert_list_of_strings_to_int(args)
     args.map do |arg|
-      arg.match(/\d+/) ? arg.to_i : (raise InvalidFileContents)
+      arg =~ /\d+/ ? arg.to_i : (raise InvalidFileContents)
     end
   end
 
   def validate_colour(colour)
-    raise InvalidFileContents unless colour.match(/[A-Z]/)
+    raise InvalidFileContents unless colour =~ /[A-Z]/
     colour
   end
 end
