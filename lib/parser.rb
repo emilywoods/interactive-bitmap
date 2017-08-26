@@ -1,4 +1,4 @@
-require 'invalid_file_contents'
+require_relative 'invalid_file_contents'
 
 class Parser
   NUM_ARGS_I = 2

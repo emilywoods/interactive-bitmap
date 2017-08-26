@@ -1,3 +1,6 @@
+require_relative 'parser'
+require_relative 'bitmap_generator'
+
 class BitmapEditor
   INVALID_INPUT_MESSAGE = 'Error: no file received/
 /nUsage: bin/bitmap_editor example.txt'.freeze

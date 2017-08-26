@@ -1,4 +1,4 @@
-require 'invalid_file_contents'
+require_relative 'invalid_file_contents'
 
 class BitmapGenerator
   COLOUR_WHITE = 'O'
@@ -50,7 +50,7 @@ class BitmapGenerator
   end
 
   def create_image
-    Array.new(image_X) {Array.new(image_Y, COLOUR_WHITE)}
+    Array.new(image_Y) {Array.new(image_X, COLOUR_WHITE)}
   end
 
   def change_pixel_colour(command, image_array)
