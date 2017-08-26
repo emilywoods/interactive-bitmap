@@ -97,4 +97,3 @@ class Parser
     colour
   end
 end
-

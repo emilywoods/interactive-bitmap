@@ -1,12 +1,12 @@
 require 'rspec'
-require "tempfile"
+require 'tempfile'
 
 require './lib/bitmap_editor'
 
 RSpec.describe 'bitmap_editor' do
   subject(:bitmap_editor) { BitmapEditor.new }
-  let(:test_file) { Tempfile.new("new_file") }
-  let(:stdout) {spy(STDOUT)}
+  let(:test_file) { Tempfile.new('new_file') }
+  let(:stdout) { spy(STDOUT) }
 
   it 'should output an error message when no file is input' do
     expect(STDOUT).to receive(:puts).with(BitmapEditor::INVALID_INPUT_MESSAGE)
@@ -53,7 +53,6 @@ RSpec.describe 'bitmap_editor' do
     expect { bitmap_editor.run(test_file) }.to raise_error(InvalidFileContents)
   end
 
-
   it 'should show the image when the final line is S (show)' do
     expect(STDOUT).to receive(:puts).with('O')
     create_test_file("I 1 1\nS")
@@ -62,7 +61,7 @@ RSpec.describe 'bitmap_editor' do
 
   it 'should not show the same when the final line is not S (show)' do
     expect(STDOUT).to_not receive(:puts).with('O')
-    create_test_file("I 1 1")
+    create_test_file('I 1 1')
     bitmap_editor.run(test_file)
   end
 
