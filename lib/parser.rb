@@ -36,7 +36,6 @@ class Parser
   end
 
   def parse_line(line)
-    validate_command(line)
     first_char = line.slice(0)
     line_without_first_char = line[1..-1]
     case first_char
@@ -63,12 +62,6 @@ class Parser
         colour = validate_colour(args[3])
         Hash[SYM_COMMAND, first_char, SYM_X0, dims_as_i[0], SYM_Y0, dims_as_i[1], SYM_Y1, dims_as_i[2], SYM_COLOUR, colour]
     end
-  end
-
-  # Remove??
-  def validate_command(char)
-    pattern = /(?:H\s)|(?:I\s)|(?:C)|(?:L\s)|(?:V\s)|(?:S)/
-    raise InvalidFileContents unless char.match(pattern)
   end
 
   def validate_num_of_args(line, expected_arg_num)
