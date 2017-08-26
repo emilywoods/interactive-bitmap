@@ -44,9 +44,9 @@ class BitmapGenerator
 
   def image_size_within_limits?
     source.first[:x0] >= 1 &&
-        source.first[:x0] < 250 &&
+        source.first[:x0] <= 250 &&
         source.first[:y0] >= 1 &&
-        source.first[:y0] < 250
+        source.first[:y0] <= 250
   end
 
   def create_image

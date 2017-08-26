@@ -1,4 +1,4 @@
-Acceptance Criteria
+## Acceptance Criteria
 
 **Scenario: No input file**\
 Given the user does not input a file\
@@ -19,7 +19,7 @@ Then an error is raised
 **Scenario: Valid file, image outside limits**\
 Given the user inputs a valid file\
 And the first command is I\
-And the image is outside the limits (0-250)\ 
+And the image is outside the limits\ 
 When the user runs the program\
 Then an error is raised
 
