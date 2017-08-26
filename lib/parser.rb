@@ -1,5 +1,12 @@
 class Parser
 
+  NUM_ARGS_I = 2
+  NUM_ARGS_L = 3
+  NUM_ARGS_V = 4
+  NUM_ARGS_H = 4
+  NUM_ARGS_C = 0
+  NUM_ARGS_S = 0
+
   attr_reader :source
 
   def initialize(source)
@@ -23,13 +30,34 @@ class Parser
   end
 
   def parse_line(line)
+    validate_command(line)
     first_char = line.slice(0)
-    validate_command(first_char)
+    line_without_first_char = line[1..-1]
+    case first_char
+      when /I/
+        validate_num_of_args(line_without_first_char, NUM_ARGS_I)
+      when /H/
+        validate_num_of_args(line_without_first_char, NUM_ARGS_H)
+      when /C/
+        validate_num_of_args(line_without_first_char, NUM_ARGS_C)
+      when /L/
+        validate_num_of_args(line_without_first_char, NUM_ARGS_L)
+      when /V/
+        validate_num_of_args(line_without_first_char, NUM_ARGS_V)
+      when /S/
+        validate_num_of_args(line_without_first_char, NUM_ARGS_S)
+    end
   end
 
   def validate_command(char)
     pattern = /(?:H\s)|(?:I\s)|(?:C\s)|(?:L\s)|(?:V\s)|(?:S\s)/
     raise InvalidFileContents unless char.match(pattern)
+  end
+
+  def validate_num_of_args(line, expected_arg_num)
+    args = line.split(" ")
+    raise InvalidFileContents unless args.size == expected_arg_num
+    args
   end
 end
 
