@@ -7,8 +7,8 @@ class BitmapEditor
 
     file_contents = File.read(file)
 
-    parsed_input, final_command = Parser.new(file_contents).parse
+    parsed_input = Parser.new(file_contents).parse
     bitmap = BitmapGenerator.new(parsed_input).generate
-    STDOUT.puts(bitmap) if final_command == 'S'
+    STDOUT.puts(bitmap[1]) if bitmap[0] == 'S'
   end
 end
