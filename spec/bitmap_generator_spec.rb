@@ -29,6 +29,11 @@ describe 'bitmap_generator' do
     expect{BitmapGenerator.new(source).generate}.to raise_error(InvalidFileContents)
   end
 
+  it 'should raise an error if the input command is lowercase' do
+    source = [{"command": "i", "x0": 1, "y0": 1}]
+    expect{BitmapGenerator.new(source).generate}.to raise_error(InvalidFileContents)
+  end
+
   it 'should generate a pixel image when the input values are valid' do
     source = [{"command": "I", "x0": 1, "y0": 1}]
     image = BitmapGenerator.new(source).generate
