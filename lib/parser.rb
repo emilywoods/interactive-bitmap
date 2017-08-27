@@ -13,6 +13,9 @@ class Parser
   SYM_Y1 = :y1
   SYM_COMMAND = :command
   SYM_COLOUR = :colour
+  INVALID_NUMBER_OF_ARGS = "Error: incorrect number of arguments given"
+  INVALID_PIXEL_COORD_TYPE = "Error: pixel coordinates must be given as integers"
+  INVALID_COLOUR_TYPE = "Error: colour must be provided as an uppercase alphabetic character"
 
   attr_reader :source
 
@@ -82,18 +85,18 @@ class Parser
 
   def validate_num_of_args(line, expected_arg_num)
     args = line.split(' ')
-    raise InvalidFileContents unless args.size == expected_arg_num
+    raise InvalidFileContents, INVALID_NUMBER_OF_ARGS unless args.size == expected_arg_num
     args
   end
 
   def convert_list_of_strings_to_int(args)
     args.map do |arg|
-      arg =~ /\d+/ ? arg.to_i : (raise InvalidFileContents)
+      arg =~ /\d+/ ? arg.to_i : (raise InvalidFileContents, INVALID_PIXEL_COORD_TYPE)
     end
   end
 
   def validate_colour(colour)
-    raise InvalidFileContents unless colour =~ /[A-Z]/
+    raise InvalidFileContents, INVALID_COLOUR_TYPE unless colour =~ /[A-Z]/
     colour
   end
 end

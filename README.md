@@ -70,5 +70,7 @@ To run Rubocop with formatting
  or outputting to a file/GUI, we should be able to do so without modifying the BitmapEditor class. This code should be 
  somewhat modular and facilitate easy replacement of the approach to handling user interactions.
  
+ - Tests to include error messages
+ 
  
 

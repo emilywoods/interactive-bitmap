@@ -1,8 +1,12 @@
 require_relative 'invalid_file_contents'
 
 class BitmapGenerator
-  COLOUR_WHITE = 'O'.freeze
   attr_reader :source, :image_X, :image_Y
+
+  COLOUR_WHITE = 'O'.freeze
+  INVALID_FIRST_COMMAND = "Error: First command should create image\
+\ne.g. to create a 5x5 image command is: I 5 5"
+  INVALID_COORDINATES = "Error: attempting to modify pixel outside image limits or with invalid range"
 
   def initialize(source)
     @source = source
@@ -24,11 +28,11 @@ class BitmapGenerator
   def generate_image(command, image_array)
     case command[:command]
     when 'I'
-      create_image
+      create_blank_image
     when 'L'
       change_pixel_colour(command, image_array)
     when 'C'
-      clear_image
+      create_blank_image
     when 'V'
       draw_vertical_line(command, image_array)
     when 'H'
@@ -39,7 +43,7 @@ class BitmapGenerator
   end
 
   def validate_first_command_creates_image
-    raise InvalidFileContents if source.first[:command] != 'I' || !image_size_within_limits?
+    raise InvalidFileContents, INVALID_FIRST_COMMAND if source.first[:command] != 'I' || !image_size_within_limits?
   end
 
   def image_size_within_limits?
@@ -49,7 +53,7 @@ class BitmapGenerator
       source.first[:y0] <= 250
   end
 
-  def create_image
+  def create_blank_image
     Array.new(image_Y) { Array.new(image_X, COLOUR_WHITE) }
   end
 
@@ -57,14 +61,10 @@ class BitmapGenerator
     x = command[:x0]
     y = command[:y0]
 
-    raise InvalidFileContents if x > image_X || y > image_Y
+    raise InvalidFileContents, INVALID_COORDINATES if x > image_X || y > image_Y
 
     image_array[y - 1][x - 1] = command[:colour]
     image_array
-  end
-
-  def clear_image
-    [[], []]
   end
 
   def draw_vertical_line(command, image_array)
@@ -100,10 +100,10 @@ class BitmapGenerator
   end
 
   def validate_x(x = 1, x1 = 1)
-    raise InvalidFileContents unless x && x1 <= image_X && x < x1
+    raise InvalidFileContents, INVALID_COORDINATES unless x && x1 <= image_X && x < x1
   end
 
   def validate_y(y = 1, y1 = 1)
-    raise InvalidFileContents unless y && y1 <= image_Y && y < y1
+    raise InvalidFileContents, INVALID_COORDINATES unless y && y1 <= image_Y && y < y1
   end
 end

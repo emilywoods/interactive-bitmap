@@ -75,10 +75,10 @@ describe 'bitmap_generator' do
     expect{BitmapGenerator.new(source).generate}.to raise_error(InvalidFileContents)
   end
 
-  it 'should clear an image' do
-    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "C"} ]
+  it 'should clear an image, by setting all pixels to white ' do
+    source = [{"command": "I", "x0": 3, "y0": 3}, {"command": "L", "x0": 2, "y0": 2, "colour": "C"}, {"command": "C"} ]
     image = BitmapGenerator.new(source).generate
-    expect(image).to eq([[],[]])
+    expect(image).to eq([["O", "O", "O"], ["O", "O", "O"], ["O", "O", "O"]])
   end
 
   it 'should draw a vertical segment - V 3 1 2 G' do
