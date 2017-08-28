@@ -72,5 +72,8 @@ To run Rubocop with formatting
  
  - Tests to include error messages
  
+ - Add CI with unit tests and formatting checks to verify successful builds each time a commit
+ is pushed to the remote repo
  
+
 
